@@ -1,0 +1,51 @@
+pipeline {
+    agent{
+	label 'slave'
+    }
+    environment {
+        APP_NAME = 'node -app'
+        VERSION  = 'Latest''
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from the Git repository
+                git 'https://github.com/srinivas3245/node-js.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Build the application
+                    echo "Building the application"
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run unit tests
+                    echo "Running unit tests"
+                    sh 'mvn test'
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            // Actions to perform after a successful pipeline run
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            // Actions to perform if the pipeline fails
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}
+
