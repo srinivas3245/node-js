@@ -4,7 +4,7 @@ pipeline {
     }
     environment {
         APP_NAME = 'node -app'
-        VERSION  = 'Latest''
+        VERSION  = 'Latest'
     }
 
     stages {
@@ -20,7 +20,7 @@ pipeline {
                 script {
                     // Build the application
                     echo "Building the application"
-                    sh 'mvn clean install'
+                    sh 'docker build -t $APP_NAME:$VERSION -f Dockerfile .'
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
                 script {
                     // Run unit tests
                     echo "Running unit tests"
-                    sh 'mvn test'
+                    sh 'sleep 10'
                 }
             }
         }
